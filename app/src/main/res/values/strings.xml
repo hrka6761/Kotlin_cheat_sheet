@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Kotlin cheat sheet</string>
+    <string name="apk_type">application/vnd.android.package-archive</string>
+    <string name="new_version_download_failed_msg">Failed to download new version, please try again later.</string>
+    <string name="new_version_dialog_title_update">Update</string>
+    <string name="new_version_dialog_title_downloading">Downloading</string>
+    <string name="new_version_dialog_title_install_permission">Install permission</string>
+    <string name="new_version_dialog_cancel_btn">Cancel</string>
+    <string name="new_version_dialog_allow_btn">Allow</string>
+    <string name="new_version_dialog_update_btn">Update</string>
+    <string name="splash_screen_author_name">Powered by HAMIDREZA KARAMI</string>
+    <string name="splash_screen_title">Kotlin Cheat Sheet</string>
+    <string name="new_version_dialog_desc_available">Update the app with new version.%1$s</string>
+    <string name="new_version_dialog_desc_available_mandatory_update">\n\n * If you do not update, you cannot use the app.</string>
+    <string name="new_version_dialog_desc_install_permission">Please allow to install app from this source.%1$s</string>
 </resources>

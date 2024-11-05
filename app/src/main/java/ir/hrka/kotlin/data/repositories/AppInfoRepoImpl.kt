@@ -1,7 +1,6 @@
 package ir.hrka.kotlin.data.repositories
 
 import ir.hrka.kotlin.core.utilities.Constants.RETROFIT_ERROR_CODE
-import ir.hrka.kotlin.core.utilities.Constants.TOKEN
 import ir.hrka.kotlin.core.utilities.Resource
 import ir.hrka.kotlin.data.datasource.GithubAPI
 import ir.hrka.kotlin.domain.entities.RepoFileModel
@@ -15,7 +14,7 @@ class AppInfoRepoImpl @Inject constructor(
 
     override suspend fun getAppInfo(): Resource<RepoFileModel?> {
         return try {
-            val response = githubAPI.getAppInfo(TOKEN)
+            val response = githubAPI.getAppInfo()
             if (response.isSuccessful)
                 Resource.Success(response.body())
             else

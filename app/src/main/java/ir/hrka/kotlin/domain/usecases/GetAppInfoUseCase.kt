@@ -17,7 +17,7 @@ class GetAppInfoUseCase @Inject constructor(private val appInfoRepo: AppInfoRepo
         return if (gradleFileContent != null)
             Resource.Success(provideAppInfoModel(gradleFileContent))
         else
-            Resource.Error(ErrorModel(READ_FILE_ERROR_CODE, "Cant read the gradle file."))
+            Resource.Error(ErrorModel(READ_FILE_ERROR_CODE, "Can't access the github repository files."))
     }
 
 
