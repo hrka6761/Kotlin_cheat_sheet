@@ -15,8 +15,8 @@ android {
         applicationId = "ir.hrka.kotlin"
         minSdk = 31
         targetSdk = 34
-        versionCode = 4
-        versionName = "3.2.0"
+        versionCode = 5
+        versionName = "4.0.0"
         versionNameSuffix = "non_mandatory"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

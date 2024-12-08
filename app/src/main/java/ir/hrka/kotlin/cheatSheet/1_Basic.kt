@@ -11,30 +11,35 @@ import ir.hrka.kotlin.core.utilities.Log.printYellow
  * ```
  * package ir.hrka.kotlin.cheatSheet
  * ```
- * * when you want to use a class, function, or extension,
+ * * When you want to use a class, function, or extension,
  * you can Import it into your file to use the class or function without
- * specifying its full name every time, unless it is in the same package:
+ * specifying its full name every time:
+ *    * To use a function or extension in the same package, you don't need to use the full name or import its package.
  * ```
  * import ir.hrka.kotlin.cheatSheet.Class
  * ```
  * * We can declare value by `val` that is immutable:
  *    * It equals final variable in java.
- *    * It only has getter.
+ *    * It only contains getter.
  *    * It is thread safety.
  *    * It is more memory-efficient.
  * ```
  * val a = 1
  *     get() {
- *         return field
+ *         return field + 1
  *     }
- * val c: Long = 1L
+ * ```
+ * ```
+ * val b: Long = 1L
  * ```
  * * We can declare variable by `var` that is mutable:
  *    * It equals regular variable in java.
- *    * It has getter and setter.
+ *    * It contains getter and setter.
  * ```
- * var d: Float = 2.0f
- * d = 3.2f
+ * var a: Float = 2.0f
+ * a = 3.2f
+ * ```
+ * ```
  * var b = "text"
  *     get() {
  *         return field
@@ -70,47 +75,13 @@ import ir.hrka.kotlin.core.utilities.Log.printYellow
  *    * It must be initialized with a value of type String or a primitive type.
  *    * It cannot be a custom getter.
  * ```
- * const val A = "HRKA"
+ * const val A = "constant"
  * ```
  * * The compiler will inline usages of the constant, replacing the reference to the constant with its actual value.
  * However, the field will not be removed and therefore can be interacted with using reflection.
- * * `Unit` is an object that oly have a method (toString):
- * ```
- * public object Unit {
- *     override fun toString(): String = "kotlin.Unit"
- * }
- * ```
- * * `Any` is parent of all classes in kotlin:
- *    * directly when the class is not derived from any class and indirect when the class is derived from a class.
- * ```
- * public open class Any {
- *     public open operator fun equals(other: Any?): Boolean
- *     public open fun hashCode(): Int
- *     public open fun toString(): String
- * }
- * ```
- * * `Nothing` is a regular class that has not any instance because its constructor is private
- * (if a function has the return type of Nothing, it means that it never returns (always throws an exception)):
- * ```
- * public class Nothing private constructor()
- * ```
- * * In the following cases if person.name = null s is Nothing:
- * ```
- * val s = person.name ?: return
- * val s = person.name ?: throw NullPointerException()
- * ```
- * * `TODO()` return Nothing and throws exception:
- *    * it is a standard function of kotlin that is used in the body of functions that is not implemented yet.
- * ```
- * public inline fun TODO(): Nothing = throw NotImplementedError()
- * ```
- * ```
- * public inline fun TODO(reason: String): Nothing =
- *     throw NotImplementedError("$reason")
- * ```
  */
 
-class SampleCLass {
+class SampleCLass1 {
     val a = 1
         get() {
             return field
@@ -162,8 +133,8 @@ class SampleCLass {
  * val character: Char = 'a'
  * ```
  * * Numbers are stored as primitive types at compile time except:
- *    * when you create a nullable number reference such as Int?.
- *    * when you use generics.
+ *    * When you create a nullable number reference such as Int?.
+ *    * When you use generics.
  * ```
  * val int: Int? = 1
  * ```
@@ -340,33 +311,3 @@ val mutableSet: MutableSet<Int> = mutableSetOf(1, 2, 2)
 
 val map: Map<Int, Boolean> = mapOf(Pair(1, true), Pair(1, false), Pair(2, false))
 val mutableMap: MutableMap<Int, Long> = mutableMapOf(Pair(1, 1L), Pair(1, 2L), Pair(2, 3L))
-
-/**
- * * There are four visibility modifiers in Kotlin: `private`, `protected`, `internal`, `public`.
- * * `private` means that the member is visible inside class or file only.
- * * `protected` means that the member has the same visibility as one marked as private, but that it is also visible in subclasses.
- * * `internal` means that any client inside this module who sees the declaring class sees its internal members(a module is a set of Kotlin files compiled together).
- * * `public` means that any client who sees the declaring class sees its public members.
- * * If you don't use a visibility modifier, public is used by default.
- * * The protected modifier is not available for top-level declarations.
- * * When we declare a class private, we cannot inherit from it anywhere except in the same file or class.
- * * When we declare a class private, we can only inherit from it when the subClass is internal or private:
- * ```
- * internal open class TopLevelClassB()
- * private open class TopLevelClassC()
- * private class DerivedC : TopLevelClassC()
- * internal class DerivedB1 : TopLevelClassB()
- * private class DerivedB2 : TopLevelClassB()
- * ```
- */
-
-const val topLevelA = 1
-private lateinit var topLevelB: TopLevelClassC
-internal var topLevelC = "1"
-
-public class TopLevelClassA()
-internal open class TopLevelClassB()
-private open class TopLevelClassC()
-private class DerivedC : TopLevelClassC()
-internal class DerivedB1 : TopLevelClassB()
-private class DerivedB2 : TopLevelClassB()
