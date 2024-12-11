@@ -1,4 +1,4 @@
-package ir.hrka.kotlin.cheatSheet
+package ir.hrka.kotlin.kotlin_topics
 
 /**
  * * There are four visibility modifiers in Kotlin: `private`, `protected`, `internal`, `public`.
