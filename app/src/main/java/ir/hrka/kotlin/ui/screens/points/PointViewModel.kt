@@ -6,11 +6,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.hrka.kotlin.core.ExecutionState
 import ir.hrka.kotlin.core.ExecutionState.Start
 import ir.hrka.kotlin.core.utilities.Resource
-import ir.hrka.kotlin.domain.entities.PointDataModel
-import ir.hrka.kotlin.domain.usecases.db.read.GetDBCheatSheetPointsUseCase
-import ir.hrka.kotlin.domain.usecases.github.GetGithubCheatSheetPointsUseCase
-import ir.hrka.kotlin.domain.usecases.db.write.SaveCheatsheetPointsOnDBUseCase
-import ir.hrka.kotlin.domain.usecases.db.write.UpdateCheatSheetUpdateStateUseCase
+import ir.hrka.kotlin.domain.entities.KotlinTopicPointDataModel
+import ir.hrka.kotlin.domain.usecases.db.read.GetDBKotlinTopicPointsUseCase
+import ir.hrka.kotlin.domain.usecases.github.GetGithubKotlinTopicPointsUseCase
+import ir.hrka.kotlin.domain.usecases.db.write.SaveKotlinTopicPointsOnDBUseCase
+import ir.hrka.kotlin.domain.usecases.db.write.UpdateKotlinTopicsUpdateStateUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,15 +21,15 @@ import javax.inject.Named
 @HiltViewModel
 class PointViewModel @Inject constructor(
     @Named("IO") private val io: CoroutineDispatcher,
-    private val getGithubCheatSheetPointsUseCase: GetGithubCheatSheetPointsUseCase,
-    private val getDBCheatSheetPointsUseCase: GetDBCheatSheetPointsUseCase,
-    private val saveCheatsheetPointsOnDBUseCase: SaveCheatsheetPointsOnDBUseCase,
-    private val updateCheatSheetUpdateStateUseCase: UpdateCheatSheetUpdateStateUseCase
+    private val getGithubCheatSheetPointsUseCase: GetGithubKotlinTopicPointsUseCase,
+    private val getDBCheatSheetPointsUseCase: GetDBKotlinTopicPointsUseCase,
+    private val saveCheatsheetPointsOnDBUseCase: SaveKotlinTopicPointsOnDBUseCase,
+    private val updateCheatSheetUpdateStateUseCase: UpdateKotlinTopicsUpdateStateUseCase
 ) : ViewModel() {
 
-    private val _points: MutableStateFlow<Resource<List<PointDataModel>?>> =
+    private val _points: MutableStateFlow<Resource<List<KotlinTopicPointDataModel>?>> =
         MutableStateFlow(Resource.Initial())
-    val points: StateFlow<Resource<List<PointDataModel>?>> = _points
+    val points: StateFlow<Resource<List<KotlinTopicPointDataModel>?>> = _points
     private val _executionState: MutableStateFlow<ExecutionState> = MutableStateFlow(Start)
     val executionState: MutableStateFlow<ExecutionState> = _executionState
     private val _saveCheatsheetPointsResult: MutableStateFlow<Resource<Boolean>> =

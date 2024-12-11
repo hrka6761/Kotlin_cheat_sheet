@@ -3,19 +3,19 @@ package ir.hrka.kotlin.domain.usecases.github
 import ir.hrka.kotlin.core.utilities.Resource
 import ir.hrka.kotlin.core.utilities.decodeBase64
 import ir.hrka.kotlin.core.utilities.extractVersionNameFromGradleContent
-import ir.hrka.kotlin.domain.entities.db.Cheatsheet
+import ir.hrka.kotlin.domain.entities.db.KotlinTopicModel
 import ir.hrka.kotlin.domain.repositories.github.AppInfoRepo
-import ir.hrka.kotlin.domain.repositories.github.ReadGithubCheatSheetRepo
+import ir.hrka.kotlin.domain.repositories.github.ReadGithubKotlinTopicsRepo
 import javax.inject.Inject
 
-class GetGithubCheatSheetsUseCase @Inject constructor(
-    private val readGithubCheatSheetRepo: ReadGithubCheatSheetRepo,
+class GetGithubKotlinTopicsListUseCase @Inject constructor(
+    private val readGithubCheatSheetRepo: ReadGithubKotlinTopicsRepo,
     private val appInfoRepo: AppInfoRepo
 ) {
 
-    suspend operator fun invoke(): Resource<List<Cheatsheet>?> {
+    suspend operator fun invoke(): Resource<List<KotlinTopicModel>?> {
         val versionNameResult = appInfoRepo.getAppInfo()
-        val repoFileModelListResult = readGithubCheatSheetRepo.getCheatSheetsList()
+        val repoFileModelListResult = readGithubCheatSheetRepo.getKotlinTopicsList()
 
         if (versionNameResult is Resource.Error)
             return Resource.Error(versionNameResult.error!!)
@@ -34,7 +34,7 @@ class GetGithubCheatSheetsUseCase @Inject constructor(
 
         val cheatsheetList = sortedRepoFileModelList?.let {
             it.map { repoFileModel ->
-                Cheatsheet(
+                KotlinTopicModel(
                     id = repoFileModel.id,
                     name = repoFileModel.name,
                     versionName = versionName,

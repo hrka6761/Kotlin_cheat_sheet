@@ -9,10 +9,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ir.hrka.kotlin.core.Constants.DATABASE_NAME
 import ir.hrka.kotlin.data.datasource.db.AppDatabase
-import ir.hrka.kotlin.data.datasource.db.dbinteractions.CheatsheetDao
-import ir.hrka.kotlin.data.datasource.db.dbinteractions.PointDao
-import ir.hrka.kotlin.data.datasource.db.dbinteractions.SnippetCodeDao
-import ir.hrka.kotlin.data.datasource.db.dbinteractions.SubPointDao
+import ir.hrka.kotlin.data.datasource.db.dbinteractions.KotlinTopicsDao
+import ir.hrka.kotlin.data.datasource.db.dbinteractions.KotlinTopicPointsDao
+import ir.hrka.kotlin.data.datasource.db.dbinteractions.KotlinTopicSnippetCodesDao
+import ir.hrka.kotlin.data.datasource.db.dbinteractions.KotlinTopicSubPointsDao
 import javax.inject.Singleton
 
 
@@ -31,17 +31,17 @@ class DBModule {
 
     @Singleton
     @Provides
-    fun provideCheatSheetDao(db: AppDatabase): CheatsheetDao = db.cheatsheetDao()
+    fun provideKotlinTopicsDao(db: AppDatabase): KotlinTopicsDao = db.kotlinTopicsDao()
 
     @Singleton
     @Provides
-    fun providePointDao(db: AppDatabase): PointDao = db.pointDao()
+    fun provideKotlinPointDao(db: AppDatabase): KotlinTopicPointsDao = db.kotlinTopicPointsDao()
 
     @Singleton
     @Provides
-    fun provideSubPointDao(db: AppDatabase): SubPointDao = db.supPointDao()
+    fun provideKotlinSubPointDao(db: AppDatabase): KotlinTopicSubPointsDao = db.kotlinTopicSupPointsDao()
 
     @Singleton
     @Provides
-    fun provideSnippetCodeDao(db: AppDatabase): SnippetCodeDao = db.snippetCodeDao()
+    fun provideKotlinSnippetCodeDao(db: AppDatabase): KotlinTopicSnippetCodesDao = db.kotlinTopicSnippetCodesDao()
 }

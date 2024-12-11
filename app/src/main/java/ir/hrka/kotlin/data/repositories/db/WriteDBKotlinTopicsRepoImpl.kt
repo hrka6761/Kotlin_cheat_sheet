@@ -10,28 +10,28 @@ import ir.hrka.kotlin.core.Constants.DB_WRITE_POINTS_ERROR_CODE
 import ir.hrka.kotlin.core.Constants.DB_WRITE_SNIPPET_CODES_ERROR_CODE
 import ir.hrka.kotlin.core.Constants.DB_WRITE_SUB_POINTS_ERROR_CODE
 import ir.hrka.kotlin.core.utilities.Resource
-import ir.hrka.kotlin.data.datasource.db.dbinteractions.CheatsheetDao
-import ir.hrka.kotlin.data.datasource.db.dbinteractions.PointDao
-import ir.hrka.kotlin.data.datasource.db.dbinteractions.SnippetCodeDao
-import ir.hrka.kotlin.data.datasource.db.dbinteractions.SubPointDao
+import ir.hrka.kotlin.data.datasource.db.dbinteractions.KotlinTopicsDao
+import ir.hrka.kotlin.data.datasource.db.dbinteractions.KotlinTopicPointsDao
+import ir.hrka.kotlin.data.datasource.db.dbinteractions.KotlinTopicSnippetCodesDao
+import ir.hrka.kotlin.data.datasource.db.dbinteractions.KotlinTopicSubPointsDao
 import ir.hrka.kotlin.domain.entities.ErrorModel
-import ir.hrka.kotlin.domain.entities.db.Cheatsheet
-import ir.hrka.kotlin.domain.entities.db.Point
-import ir.hrka.kotlin.domain.entities.db.SnippetCode
-import ir.hrka.kotlin.domain.entities.db.SubPoint
-import ir.hrka.kotlin.domain.repositories.db.WriteDBCheatsheetRepo
+import ir.hrka.kotlin.domain.entities.db.KotlinTopicModel
+import ir.hrka.kotlin.domain.entities.db.KotlinTopicPointModel
+import ir.hrka.kotlin.domain.entities.db.KotlinTopicSnippetCodeModel
+import ir.hrka.kotlin.domain.entities.db.KotlinTopicSubPointModel
+import ir.hrka.kotlin.domain.repositories.db.WriteDBKotlinTopicsRepo
 import javax.inject.Inject
 
-class WriteDBCheatsheetRepoImpl @Inject constructor(
-    private val cheatsheetDao: CheatsheetDao,
-    private val pointDao: PointDao,
-    private val subPointDao: SubPointDao,
-    private val snippetCodeDao: SnippetCodeDao
-) : WriteDBCheatsheetRepo {
+class WriteDBKotlinTopicsRepoImpl @Inject constructor(
+    private val cheatsheetDao: KotlinTopicsDao,
+    private val pointDao: KotlinTopicPointsDao,
+    private val subPointDao: KotlinTopicSubPointsDao,
+    private val snippetCodeDao: KotlinTopicSnippetCodesDao
+) : WriteDBKotlinTopicsRepo {
 
-    override suspend fun saveCheatSheetsOnDB(cheatsheets: List<Cheatsheet>): Resource<Boolean> {
+    override suspend fun saveKotlinTopicsListOnDB(kotlinTopics: List<KotlinTopicModel>): Resource<Boolean> {
         return try {
-            cheatsheetDao.insertCheatsheets(*cheatsheets.toTypedArray())
+            cheatsheetDao.insertKotlinTopics(*kotlinTopics.toTypedArray())
             Resource.Success(true)
         } catch (e: Exception) {
             Resource.Error(
@@ -43,9 +43,9 @@ class WriteDBCheatsheetRepoImpl @Inject constructor(
         }
     }
 
-    override suspend fun clearCheatsheetTable(): Resource<Boolean> {
+    override suspend fun clearKotlinTopicsListTable(): Resource<Boolean> {
         return try {
-            cheatsheetDao.deleteCheatsheets()
+            cheatsheetDao.deleteKotlinTopics()
             Resource.Success(true)
         } catch (e: Exception) {
             Resource.Error(
@@ -57,12 +57,12 @@ class WriteDBCheatsheetRepoImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateCheatsheetStateOnDB(
+    override suspend fun updateKotlinTopicStateOnDB(
         id: Int,
         hasContentUpdated: Boolean
     ): Resource<Boolean> {
         return try {
-            cheatsheetDao.updateCheatsheetUpdateState(id, hasContentUpdated)
+            cheatsheetDao.updateKotlinTopicUpdateState(id, hasContentUpdated)
             Resource.Success(true)
         } catch (e: Exception) {
             Resource.Error(
@@ -74,9 +74,9 @@ class WriteDBCheatsheetRepoImpl @Inject constructor(
         }
     }
 
-    override suspend fun savePointsOnDB(point: Point): Resource<Long> {
+    override suspend fun saveKotlinTopicPointOnDB(kotlinTopicPoint: KotlinTopicPointModel): Resource<Long> {
         return try {
-            val rowId = pointDao.insertPoints(point)
+            val rowId = pointDao.insertKotlinTopicPoints(kotlinTopicPoint)
             Resource.Success(rowId)
         } catch (e: Exception) {
             Resource.Error(
@@ -88,9 +88,9 @@ class WriteDBCheatsheetRepoImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveSubPointsOnDB(subPoints: Array<SubPoint>): Resource<Boolean> {
+    override suspend fun saveKotlinTopicSubPointsOnDB(kotlinTopicSubPoints: Array<KotlinTopicSubPointModel>): Resource<Boolean> {
         return try {
-            subPointDao.insertSubPoints(*subPoints)
+            subPointDao.insertPointSubPoints(*kotlinTopicSubPoints)
             Resource.Success(true)
         } catch (e: Exception) {
             Resource.Error(
@@ -102,9 +102,9 @@ class WriteDBCheatsheetRepoImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveSnippetCodesOnDB(snippetCodes: Array<SnippetCode>): Resource<Boolean> {
+    override suspend fun saveKotlinTopicSnippetCodesOnDB(kotlinTopicSnippetCodes: Array<KotlinTopicSnippetCodeModel>): Resource<Boolean> {
         return try {
-            snippetCodeDao.insertSnippetCodes(*snippetCodes)
+            snippetCodeDao.insertPointSnippetCodes(*kotlinTopicSnippetCodes)
             Resource.Success(true)
         } catch (e: Exception) {
             Resource.Error(
@@ -116,9 +116,9 @@ class WriteDBCheatsheetRepoImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteCheatsheetPoints(cheatsheetName: String): Resource<Boolean> {
+    override suspend fun deleteKotlinTopicPoints(kotlinTopicName: String): Resource<Boolean> {
         return try {
-            pointDao.deleteCheatsheetPoints(cheatsheetName)
+            pointDao.deleteKotlinTopicPoints(kotlinTopicName)
             Resource.Success(true)
         } catch (e: Exception) {
             Resource.Error(
@@ -130,9 +130,9 @@ class WriteDBCheatsheetRepoImpl @Inject constructor(
         }
     }
 
-    override suspend fun deletePointSubPoints(pointId: Long): Resource<Boolean> {
+    override suspend fun deleteKotlinTopicPointSubPoints(kotlinTopicPointId: Long): Resource<Boolean> {
         return try {
-            subPointDao.deletePointSubPoints(pointId)
+            subPointDao.deletePointSubPoints(kotlinTopicPointId)
             Resource.Success(true)
         } catch (e: Exception) {
             Resource.Error(
@@ -144,9 +144,9 @@ class WriteDBCheatsheetRepoImpl @Inject constructor(
         }
     }
 
-    override suspend fun deletePointSnippetCodes(pointId: Long): Resource<Boolean> {
+    override suspend fun deleteKotlinTopicPointSnippetCodes(kotlinTopicPointId: Long): Resource<Boolean> {
         return try {
-            snippetCodeDao.deletePointSnippetCodes(pointId)
+            snippetCodeDao.deletePointSnippetCodes(kotlinTopicPointId)
             Resource.Success(true)
         } catch (e: Exception) {
             Resource.Error(

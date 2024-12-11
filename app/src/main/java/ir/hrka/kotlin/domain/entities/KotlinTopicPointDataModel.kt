@@ -1,6 +1,6 @@
 package ir.hrka.kotlin.domain.entities
 
-data class PointDataModel(
+data class KotlinTopicPointDataModel(
     val num: Int,
     val databaseId: Long?,
     val rawPoint: String,

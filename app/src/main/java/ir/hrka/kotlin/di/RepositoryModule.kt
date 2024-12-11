@@ -5,15 +5,15 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import ir.hrka.kotlin.data.repositories.github.AppInfoRepoImpl
-import ir.hrka.kotlin.data.repositories.db.ReadDBCheatSheetRepoImpl
-import ir.hrka.kotlin.data.repositories.github.ReadGithubCheatSheetRepoImpl
-import ir.hrka.kotlin.data.repositories.db.WriteDBCheatsheetRepoImpl
+import ir.hrka.kotlin.data.repositories.db.ReadDBKotlinTopicsRepoImpl
+import ir.hrka.kotlin.data.repositories.github.ReadGithubKotlinTopicsRepoImpl
+import ir.hrka.kotlin.data.repositories.db.WriteDBKotlinTopicsRepoImpl
 import ir.hrka.kotlin.data.repositories.preference.VersionDataRepoImpl
 import ir.hrka.kotlin.domain.repositories.github.AppInfoRepo
-import ir.hrka.kotlin.domain.repositories.github.ReadGithubCheatSheetRepo
-import ir.hrka.kotlin.domain.repositories.db.WriteDBCheatsheetRepo
+import ir.hrka.kotlin.domain.repositories.github.ReadGithubKotlinTopicsRepo
+import ir.hrka.kotlin.domain.repositories.db.WriteDBKotlinTopicsRepo
 import ir.hrka.kotlin.domain.repositories.preference.VersionDataRepo
-import ir.hrka.kotlin.domain.repositories.db.ReadDBCheatSheetRepo
+import ir.hrka.kotlin.domain.repositories.db.ReadDBKotlinTopicsRepo
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -23,14 +23,14 @@ interface RepositoryModule {
     fun bindAppInfoRepo(appInfoRepoImpl: AppInfoRepoImpl): AppInfoRepo
 
     @Binds
-    fun bindGithubCheatSheetsListRepo(readGithubCheatSheetsRepoImpl: ReadGithubCheatSheetRepoImpl): ReadGithubCheatSheetRepo
+    fun bindGithubKotlinTopicsRepo(readGithubKotlinTopicsRepoImpl: ReadGithubKotlinTopicsRepoImpl): ReadGithubKotlinTopicsRepo
 
     @Binds
-    fun bindDBCheatSheetsListRepo(readDBCheatSheetsRepoImpl: ReadDBCheatSheetRepoImpl): ReadDBCheatSheetRepo
+    fun bindDBKotlinTopicsRepo(readDBKotlinTopicsRepoImpl: ReadDBKotlinTopicsRepoImpl): ReadDBKotlinTopicsRepo
 
     @Binds
     fun bindLocalDataRepo(localDataRepoImpl: VersionDataRepoImpl): VersionDataRepo
 
     @Binds
-    fun bindDBRepo(writeDbCheatSheetsRepoImpl: WriteDBCheatsheetRepoImpl): WriteDBCheatsheetRepo
+    fun bindDBRepo(writeDbCheatSheetsRepoImpl: WriteDBKotlinTopicsRepoImpl): WriteDBKotlinTopicsRepo
 }

@@ -59,7 +59,7 @@ import ir.hrka.kotlin.core.ExecutionState.Stop
 import ir.hrka.kotlin.core.utilities.Resource
 import ir.hrka.kotlin.core.utilities.extractFileName
 import ir.hrka.kotlin.core.utilities.splitByCapitalLetters
-import ir.hrka.kotlin.domain.entities.PointDataModel
+import ir.hrka.kotlin.domain.entities.KotlinTopicPointDataModel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -265,7 +265,7 @@ fun PointAppBar(
 }
 
 @Composable
-fun PointItem(point: PointDataModel) {
+fun PointItem(point: KotlinTopicPointDataModel) {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()

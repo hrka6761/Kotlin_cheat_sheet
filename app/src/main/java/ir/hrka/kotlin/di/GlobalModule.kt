@@ -1,6 +1,5 @@
 package ir.hrka.kotlin.di
 
-import android.app.DownloadManager
 import android.content.Context
 import android.content.SharedPreferences
 import dagger.Module
@@ -33,11 +32,6 @@ class GlobalModule {
     @Named("Unconfined")
     @Provides
     fun provideUnConfinedDispatchers(): CoroutineDispatcher = Dispatchers.Unconfined
-
-    @Provides
-    fun provideDownloadManager(
-        @ApplicationContext context: Context
-    ): DownloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
     @Singleton
     @Provides

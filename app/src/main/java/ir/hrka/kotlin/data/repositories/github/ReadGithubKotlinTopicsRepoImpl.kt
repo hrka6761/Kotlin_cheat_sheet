@@ -12,18 +12,18 @@ import ir.hrka.kotlin.core.utilities.extractSnippetCodeFromPoint
 import ir.hrka.kotlin.core.utilities.extractSubPointsFromPointContent
 import ir.hrka.kotlin.data.datasource.github.GithubAPI
 import ir.hrka.kotlin.domain.entities.ErrorModel
-import ir.hrka.kotlin.domain.entities.PointDataModel
+import ir.hrka.kotlin.domain.entities.KotlinTopicPointDataModel
 import ir.hrka.kotlin.domain.entities.RepoFileModel
-import ir.hrka.kotlin.domain.repositories.github.ReadGithubCheatSheetRepo
+import ir.hrka.kotlin.domain.repositories.github.ReadGithubKotlinTopicsRepo
 import javax.inject.Inject
 
-class ReadGithubCheatSheetRepoImpl @Inject constructor(
+class ReadGithubKotlinTopicsRepoImpl @Inject constructor(
     private val githubAPI: GithubAPI
-) : ReadGithubCheatSheetRepo {
+) : ReadGithubKotlinTopicsRepo {
 
-    override suspend fun getCheatSheetsList(): Resource<List<RepoFileModel>?> {
+    override suspend fun getKotlinTopicsList(): Resource<List<RepoFileModel>?> {
         return try {
-            val response = githubAPI.getCheatSheetsList()
+            val response = githubAPI.getKotlinTopicsList()
 
             if (response.isSuccessful) {
                 val sortedList = response.body()
@@ -46,9 +46,9 @@ class ReadGithubCheatSheetRepoImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCheatSheetPoints(cheatsheetName: String): Resource<List<PointDataModel>?> {
+    override suspend fun getKotlinTopicPoints(kotlinTopicName: String): Resource<List<KotlinTopicPointDataModel>?> {
         return try {
-            val response = githubAPI.getCheatSheetFile(fileName = cheatsheetName)
+            val response = githubAPI.getKotlinTopicFile(fileName = kotlinTopicName)
 
             if (response.isSuccessful) {
                 val cheatSheetFile = response.body()
@@ -56,7 +56,7 @@ class ReadGithubCheatSheetRepoImpl @Inject constructor(
                 val decodedCheatSheetContent = encodedCheatSheetContent.decodeBase64()
 
                 return if (decodedCheatSheetContent.isNotEmpty())
-                    Resource.Success(provideCheatSheetData(decodedCheatSheetContent))
+                    Resource.Success(provideKotlinTopicData(decodedCheatSheetContent))
                 else
                     Resource.Error(
                         ErrorModel(
@@ -83,9 +83,9 @@ class ReadGithubCheatSheetRepoImpl @Inject constructor(
     }
 
 
-    private fun provideCheatSheetData(decodedCheatSheetContent: String): List<PointDataModel> {
-        val content = decodedCheatSheetContent.extractJavaDocsFromCheatSheetFileContent()
-        val list = mutableListOf<PointDataModel>()
+    private fun provideKotlinTopicData(decodedKotlinTopicFileContent: String): List<KotlinTopicPointDataModel> {
+        val content = decodedKotlinTopicFileContent.extractJavaDocsFromCheatSheetFileContent()
+        val list = mutableListOf<KotlinTopicPointDataModel>()
         var index = 1
 
         content.forEach { javaDoc ->
@@ -98,7 +98,7 @@ class ReadGithubCheatSheetRepoImpl @Inject constructor(
                         val subPoint = clearPoint.extractSubPointsFromPointContent()
                         val num = index++
                         list.add(
-                            PointDataModel(
+                            KotlinTopicPointDataModel(
                                 num,
                                 -1L,
                                 rawPoint,

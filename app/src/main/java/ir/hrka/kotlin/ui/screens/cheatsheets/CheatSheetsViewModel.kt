@@ -10,14 +10,14 @@ import ir.hrka.kotlin.core.utilities.extractMajorFromVersionName
 import ir.hrka.kotlin.core.utilities.extractMinorFromVersionName
 import ir.hrka.kotlin.core.utilities.extractPatchFromVersionName
 import ir.hrka.kotlin.core.utilities.extractUpdatedCheatsheetsListFromVersionName
-import ir.hrka.kotlin.domain.entities.db.Cheatsheet
-import ir.hrka.kotlin.domain.usecases.db.write.ClearCheatsheetTableUseCase
-import ir.hrka.kotlin.domain.usecases.db.read.GetDBCheatSheetsUseCase
-import ir.hrka.kotlin.domain.usecases.github.GetGithubCheatSheetsUseCase
+import ir.hrka.kotlin.domain.entities.db.KotlinTopicModel
+import ir.hrka.kotlin.domain.usecases.db.write.ClearKotlinTopicsTableUseCase
+import ir.hrka.kotlin.domain.usecases.db.read.GetDBKotlinTopicsListUseCase
+import ir.hrka.kotlin.domain.usecases.github.GetGithubKotlinTopicsListUseCase
 import ir.hrka.kotlin.domain.usecases.preference.LoadCurrentVersionNameUseCase
-import ir.hrka.kotlin.domain.usecases.db.write.SaveCheatSheetsOnDBUseCase
+import ir.hrka.kotlin.domain.usecases.db.write.SaveKotlinTopicsOnDBUseCase
 import ir.hrka.kotlin.domain.usecases.preference.SaveCurrentVersionNameUseCase
-import ir.hrka.kotlin.domain.usecases.db.write.UpdateCheatSheetUpdateStateUseCase
+import ir.hrka.kotlin.domain.usecases.db.write.UpdateKotlinTopicsUpdateStateUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,18 +29,18 @@ import javax.inject.Named
 @HiltViewModel
 class CheatSheetsViewModel @Inject constructor(
     @Named("IO") private val io: CoroutineDispatcher,
-    private val getGithubCheatSheetsUseCase: GetGithubCheatSheetsUseCase,
-    private val getDBCheatsheetsUseCase: GetDBCheatSheetsUseCase,
+    private val getGithubCheatSheetsUseCase: GetGithubKotlinTopicsListUseCase,
+    private val getDBCheatsheetsUseCase: GetDBKotlinTopicsListUseCase,
     private val loadCurrentVersionNameUseCase: LoadCurrentVersionNameUseCase,
     private val saveCurrentVersionNameUseCase: SaveCurrentVersionNameUseCase,
-    private val clearCheatsheetTableUseCase: ClearCheatsheetTableUseCase,
-    private val saveCheatsheetsOnDBUseCase: SaveCheatSheetsOnDBUseCase,
-    private val updateCheatSheetUpdateStateUseCase: UpdateCheatSheetUpdateStateUseCase
+    private val clearCheatsheetTableUseCase: ClearKotlinTopicsTableUseCase,
+    private val saveCheatsheetsOnDBUseCase: SaveKotlinTopicsOnDBUseCase,
+    private val updateCheatSheetUpdateStateUseCase: UpdateKotlinTopicsUpdateStateUseCase
 ) : ViewModel() {
 
-    private val _cheatSheets: MutableStateFlow<Resource<List<Cheatsheet>?>> =
+    private val _cheatSheets: MutableStateFlow<Resource<List<KotlinTopicModel>?>> =
         MutableStateFlow(Resource.Initial())
-    val cheatSheets: StateFlow<Resource<List<Cheatsheet>?>> = _cheatSheets
+    val cheatSheets: StateFlow<Resource<List<KotlinTopicModel>?>> = _cheatSheets
     private val _executionState: MutableStateFlow<ExecutionState> = MutableStateFlow(Start)
     val executionState: MutableStateFlow<ExecutionState> = _executionState
     private val _hasUpdateForCheatSheetsList: MutableStateFlow<Boolean?> = MutableStateFlow(null)
@@ -171,7 +171,7 @@ class CheatSheetsViewModel @Inject constructor(
             }
 
             _cheatSheets.value.data?.map { cheatsheet ->
-                Cheatsheet(
+                KotlinTopicModel(
                     id = cheatsheet.id,
                     name = cheatsheet.name,
                     versionName = githubVersionName

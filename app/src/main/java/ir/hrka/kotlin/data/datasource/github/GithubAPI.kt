@@ -15,10 +15,10 @@ interface GithubAPI {
     suspend fun getAppInfo(@Header("Authorization") token: String = TOKEN): Response<RepoFileModel>
 
     @Headers("Accept: application/vnd.github.v3+json")
-    @GET("app/src/main/java/ir/hrka/kotlin/cheatSheet")
-    suspend fun getCheatSheetsList(@Header("Authorization") token: String = TOKEN): Response<List<RepoFileModel>>
+    @GET("app/src/main/java/ir/hrka/kotlin/kotlin_topic")
+    suspend fun getKotlinTopicsList(@Header("Authorization") token: String = TOKEN): Response<List<RepoFileModel>>
 
     @Headers("Accept: application/vnd.github.v3+json")
-    @GET("app/src/main/java/ir/hrka/kotlin/cheatSheet/{fileName}")
-    suspend fun getCheatSheetFile(@Header("Authorization") token: String = TOKEN, @Path("fileName") fileName: String): Response<RepoFileModel>
+    @GET("app/src/main/java/ir/hrka/kotlin/kotlin_topic/{fileName}")
+    suspend fun getKotlinTopicFile(@Header("Authorization") token: String = TOKEN, @Path("fileName") fileName: String): Response<RepoFileModel>
 }

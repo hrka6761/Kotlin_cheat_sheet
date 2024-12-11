@@ -1,26 +1,26 @@
 package ir.hrka.kotlin.domain.usecases.db.write
 
 import ir.hrka.kotlin.core.utilities.Resource
-import ir.hrka.kotlin.domain.entities.PointDataModel
-import ir.hrka.kotlin.domain.entities.db.Point
-import ir.hrka.kotlin.domain.entities.db.SnippetCode
-import ir.hrka.kotlin.domain.entities.db.SubPoint
-import ir.hrka.kotlin.domain.repositories.db.ReadDBCheatSheetRepo
-import ir.hrka.kotlin.domain.repositories.db.WriteDBCheatsheetRepo
+import ir.hrka.kotlin.domain.entities.KotlinTopicPointDataModel
+import ir.hrka.kotlin.domain.entities.db.KotlinTopicPointModel
+import ir.hrka.kotlin.domain.entities.db.KotlinTopicSnippetCodeModel
+import ir.hrka.kotlin.domain.entities.db.KotlinTopicSubPointModel
+import ir.hrka.kotlin.domain.repositories.db.ReadDBKotlinTopicsRepo
+import ir.hrka.kotlin.domain.repositories.db.WriteDBKotlinTopicsRepo
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import javax.inject.Inject
 import javax.inject.Named
 
-class SaveCheatsheetPointsOnDBUseCase @Inject constructor(
+class SaveKotlinTopicPointsOnDBUseCase @Inject constructor(
     @Named("IO") private val io: CoroutineDispatcher,
-    private val writeDBCheatsheetRepo: WriteDBCheatsheetRepo,
-    private val readDBCheatSheetRepo: ReadDBCheatSheetRepo
+    private val writeDBCheatsheetRepo: WriteDBKotlinTopicsRepo,
+    private val readDBCheatSheetRepo: ReadDBKotlinTopicsRepo
 ) {
 
     suspend operator fun invoke(
-        points: List<PointDataModel>,
+        points: List<KotlinTopicPointDataModel>,
         cheatsheetName: String
     ): Resource<Boolean> {
 
@@ -36,10 +36,10 @@ class SaveCheatsheetPointsOnDBUseCase @Inject constructor(
         points.forEach { pointDataModel ->
 
             val savePointDiffered = CoroutineScope(io).async {
-                writeDBCheatsheetRepo.savePointsOnDB(
-                    Point(
+                writeDBCheatsheetRepo.saveKotlinTopicPointOnDB(
+                    KotlinTopicPointModel(
                         pointText = pointDataModel.headPoint,
-                        cheatsheetName = cheatsheetName
+                        kotlinTopicName = cheatsheetName
                     )
                 )
             }
@@ -54,28 +54,28 @@ class SaveCheatsheetPointsOnDBUseCase @Inject constructor(
             val saveSubPointsDiffered = CoroutineScope(io).async {
                 pointDataModel.subPoints
                     ?.map { str ->
-                        SubPoint(
+                        KotlinTopicSubPointModel(
                             pointId = savePointResult.data!!,
                             subPointText = str
                         )
                     }
                     ?.toTypedArray()
                     ?.let {
-                        writeDBCheatsheetRepo.saveSubPointsOnDB(it)
+                        writeDBCheatsheetRepo.saveKotlinTopicSubPointsOnDB(it)
                     }
             }
 
             val saveSnippetCodesDiffered = CoroutineScope(io).async {
                 pointDataModel.snippetsCode
                     ?.map { str ->
-                        SnippetCode(
+                        KotlinTopicSnippetCodeModel(
                             pointId = savePointResult.data!!,
                             snippetCodeText = str
                         )
                     }
                     ?.toTypedArray()
                     ?.let {
-                        writeDBCheatsheetRepo.saveSnippetCodesOnDB(it)
+                        writeDBCheatsheetRepo.saveKotlinTopicSnippetCodesOnDB(it)
                     }
             }
 
@@ -100,7 +100,7 @@ class SaveCheatsheetPointsOnDBUseCase @Inject constructor(
 
     private suspend fun deleteCheatsheetPoints(cheatsheetName: String): Resource<Boolean> {
         val cheatsheetPointsIdResult =
-            readDBCheatSheetRepo.getCheatSheetPoints(cheatsheetName)
+            readDBCheatSheetRepo.getKotlinTopicPoints(cheatsheetName)
 
         if (cheatsheetPointsIdResult is Resource.Error)
             return Resource.Error(cheatsheetPointsIdResult.error!!)
@@ -109,14 +109,14 @@ class SaveCheatsheetPointsOnDBUseCase @Inject constructor(
             ?.map { pointDataModel -> pointDataModel.databaseId!! }!!
 
         val deletePointsDiffered = CoroutineScope(io).async {
-            writeDBCheatsheetRepo.deleteCheatsheetPoints(cheatsheetName)
+            writeDBCheatsheetRepo.deleteKotlinTopicPoints(cheatsheetName)
         }
 
         val deleteSubPointsDiffered = CoroutineScope(io).async {
             var result: Resource<Boolean> = Resource.Success(true)
 
             cheatsheets.forEach {
-                result = writeDBCheatsheetRepo.deletePointSubPoints(it)
+                result = writeDBCheatsheetRepo.deleteKotlinTopicPointSubPoints(it)
                 if (result is Resource.Error) {
                     return@forEach
                 }
@@ -129,7 +129,7 @@ class SaveCheatsheetPointsOnDBUseCase @Inject constructor(
             var result: Resource<Boolean> = Resource.Success(true)
 
             cheatsheets.forEach {
-                result = writeDBCheatsheetRepo.deletePointSnippetCodes(it)
+                result = writeDBCheatsheetRepo.deleteKotlinTopicPointSnippetCodes(it)
 
                 if (result is Resource.Error) {
                     return@forEach

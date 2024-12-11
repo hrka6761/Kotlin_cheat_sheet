@@ -3,31 +3,31 @@ package ir.hrka.kotlin.data.repositories.db
 import ir.hrka.kotlin.core.Constants.DB_READ_CHEATSHEETS_LIST_ERROR_CODE
 import ir.hrka.kotlin.core.Constants.DB_READ_CHEATSHEET_POINTS_ERROR_CODE
 import ir.hrka.kotlin.core.utilities.Resource
-import ir.hrka.kotlin.data.datasource.db.dbinteractions.CheatsheetDao
-import ir.hrka.kotlin.data.datasource.db.dbinteractions.PointDao
-import ir.hrka.kotlin.data.datasource.db.dbinteractions.SnippetCodeDao
-import ir.hrka.kotlin.data.datasource.db.dbinteractions.SubPointDao
+import ir.hrka.kotlin.data.datasource.db.dbinteractions.KotlinTopicsDao
+import ir.hrka.kotlin.data.datasource.db.dbinteractions.KotlinTopicPointsDao
+import ir.hrka.kotlin.data.datasource.db.dbinteractions.KotlinTopicSnippetCodesDao
+import ir.hrka.kotlin.data.datasource.db.dbinteractions.KotlinTopicSubPointsDao
 import ir.hrka.kotlin.domain.entities.ErrorModel
-import ir.hrka.kotlin.domain.entities.PointDataModel
-import ir.hrka.kotlin.domain.entities.db.Cheatsheet
-import ir.hrka.kotlin.domain.repositories.db.ReadDBCheatSheetRepo
+import ir.hrka.kotlin.domain.entities.KotlinTopicPointDataModel
+import ir.hrka.kotlin.domain.entities.db.KotlinTopicModel
+import ir.hrka.kotlin.domain.repositories.db.ReadDBKotlinTopicsRepo
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import javax.inject.Inject
 import javax.inject.Named
 
-class ReadDBCheatSheetRepoImpl @Inject constructor(
+class ReadDBKotlinTopicsRepoImpl @Inject constructor(
     @Named("IO") private val io: CoroutineDispatcher,
-    private val cheatsheetDao: CheatsheetDao,
-    private val pointDao: PointDao,
-    private val subPointDao: SubPointDao,
-    private val snippetCodeDao: SnippetCodeDao
-) : ReadDBCheatSheetRepo {
+    private val kotlinTopicsDao: KotlinTopicsDao,
+    private val kotlinPointDao: KotlinTopicPointsDao,
+    private val kotlinSubPointDao: KotlinTopicSubPointsDao,
+    private val kotlinSnippetCodeDao: KotlinTopicSnippetCodesDao
+) : ReadDBKotlinTopicsRepo {
 
-    override suspend fun getCheatSheetsList(): Resource<List<Cheatsheet>?> {
+    override suspend fun getKotlinTopicsList(): Resource<List<KotlinTopicModel>?> {
         return try {
-            Resource.Success(cheatsheetDao.getCheatsheets())
+            Resource.Success(kotlinTopicsDao.getKotlinTopics())
         } catch (e: Exception) {
             Resource.Error(
                 ErrorModel(
@@ -38,18 +38,18 @@ class ReadDBCheatSheetRepoImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCheatSheetPoints(cheatsheetName: String): Resource<List<PointDataModel>?> {
+    override suspend fun getKotlinTopicPoints(kotlinTopicName: String): Resource<List<KotlinTopicPointDataModel>?> {
         return try {
-            val points = pointDao.getCheatsheetPoints(cheatsheetName)
+            val points = kotlinPointDao.getKotlinTopicPoints(kotlinTopicName)
             var index = 1
 
             return Resource.Success(
                 points.map { point ->
                     val subPointsDiffered = CoroutineScope(io).async {
-                        point.id?.let { subPointDao.getPointSubPoints(it) }
+                        point.id?.let { kotlinSubPointDao.getPointSubPoints(it) }
                     }
                     val snippetsCodesDiffered = CoroutineScope(io).async {
-                        point.id?.let { snippetCodeDao.getPointSnippetCodes(it) }
+                        point.id?.let { kotlinSnippetCodeDao.getPointSnippetCodes(it) }
                     }
 
                     val subPoints =
@@ -58,7 +58,7 @@ class ReadDBCheatSheetRepoImpl @Inject constructor(
                         snippetsCodesDiffered.await()
                             ?.map { snippetsCode -> snippetsCode.snippetCodeText }
 
-                    PointDataModel(
+                    KotlinTopicPointDataModel(
                         num = index++,
                         databaseId = point.id,
                         rawPoint = "",
